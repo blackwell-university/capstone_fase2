@@ -3,91 +3,574 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abrir Formulario - Blackwell University</title>
+    <title>Capstone Project BGU | Blackwell University</title>
     <link rel="icon" type="image/png" href="https://cdn.bitrix24.es/b15495391/landing/e79/e79fb239ff37e96e3340ef1ed8782f6c/Logotipo-Blackwell_1x.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #283593;
+            --accent-color: rgba(232, 234, 246, 0.9);
+            --text-color: #2c3e50;
+            --light-bg: rgba(248, 249, 250, 0.95);
+            --gold-color: #FFD700;
+            --gold-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        }
+
         body {
-            font-family: 'Source Serif Pro', serif;
-            background-image: url('https://campus.blackwell.university/pluginfile.php/1/theme_alpha/loginbg/1731598420/portada-campus-virtual.jpg');
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                            url('https://campus.blackwell.university/pluginfile.php/1/theme_alpha/loginbg/1731598420/portada-campus-virtual.jpg');
             background-size: cover;
-            background-repeat: no-repeat;
             background-position: center;
-            height: 100vh;
-            margin: 0;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        .page-container {
+            min-height: 100vh;
             display: flex;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 2.5rem 2rem;
+            margin: 0;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+            z-index: 1;
+        }
+
+        .header h2 {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            margin: 0;
+            font-size: 2rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .form-content {
+            padding: 2.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            padding: 0.8rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--gold-color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, var(--accent-color) 0%, rgba(255,255,255,0.9) 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0 2rem 0;
+            border-left: 4px solid var(--gold-color);
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .instructions p {
+            margin: 0;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .file-upload {
+            border: 2px dashed #cbd5e0;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--gold-color);
+            background-color: var(--accent-color);
+            transform: scale(1.01);
+        }
+
+        .btn-primary {
+            background: var(--gold-gradient);
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 2rem;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+            color: #000;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(255, 215, 0, 0.3);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
             justify-content: center;
             align-items: center;
-            background-attachment: fixed;
+            z-index: 9999;
         }
 
-        .floating-form {
-            background-color: rgba(255, 255, 255, 0.95); /* Fondo semi-transparente */
-            padding: 3rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
+        /* Nuevo spinner dorado elegante */
+.loading-spinner {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    animation: spinner-rotate 2s linear infinite;
+}
+
+.loading-spinner::before,
+.loading-spinner::after {
+    content: '';
+    position: absolute;
+    border: 4px solid transparent;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: screen;
+}
+
+.loading-spinner::before {
+    border-top-color: var(--gold-color);
+    border-right-color: var(--gold-color);
+    animation: spinner-inner-rotate 3s ease-in-out infinite;
+}
+
+.loading-spinner::after {
+    border-bottom-color: #FFA500;
+    border-left-color: #FFA500;
+    animation: spinner-inner-rotate 3s ease-in-out infinite reverse;
+}
+
+@keyframes spinner-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spinner-inner-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+        /* Personalización de SweetAlert2 */
+        .swal2-popup {
+            border-radius: 20px !important;
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(10px) !important;
         }
 
-        .floating-form img {
-            max-width: 150px;
-            margin-bottom: 1.5rem;
+        .swal2-title {
+            color: var(--primary-color) !important;
+            font-family: 'Playfair Display', serif !important;
         }
 
-        .floating-form h2 {
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #2c3e50;
+        .swal2-html-container {
+            color: var(--text-color) !important;
         }
 
-        .floating-form p {
-            font-size: 1rem;
-            color: #555;
-            margin-bottom: 2rem;
+        .swal2-confirm {
+            background: var(--gold-gradient) !important;
+            color: #000 !important;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5) !important;
+            border-radius: 10px !important;
         }
 
-        .btn-open-form {
-            background-color: #007bff;
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-open-form:hover {
-            background-color: #0056b3;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        @media (max-width: 576px) {
-            .floating-form {
-                padding: 2rem;
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 1rem;
+            }
+            
+            .form-container {
+                margin: 0 1rem;
+            }
+            
+            .header h2 {
+                font-size: 1.5rem;
             }
 
-            .btn-open-form {
-                padding: 0.8rem 1.5rem;
-                font-size: 1rem;
+            .form-content {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="floating-form">
-        <img src="https://campus.blackwell.university/pluginfile.php/1/theme_alpha/customlogindmlogo/1731598420/logo-campus-virtual.png" alt="Logo de Blackwell University">
-        <h2>Formulario de Registro</h2>
-        <p>Haga clic en el botón para abrir el formulario Project Capstone fase 2.</p>
-        <button onclick="window.open('https://forms.gle/ffzaatWyZpRQtwcM7', '_blank')" class="btn-open-form">
-            Abrir Formulario
-        </button>
+    <div class="page-container">
+        <div class="container">
+            <div class="form-container animate__animated animate__fadeIn">
+                <div class="header">
+                    <h2>Capstone Project BGU</h2>
+                </div>
+                <div class="form-content">
+                    <div class="instructions animate__animated animate__fadeInLeft">
+                        <p>Complete el siguiente formulario con el tema propuesto para su Capstone Project. 
+                        El sistema analizará su documento y generará un análisis detallado por capítulos.</p>
+                    </div>
+
+                    <form id="capstoneForm" class="animate__animated animate__fadeInUp">
+                        <div class="mb-4">
+                            <label class="form-label required">Nombres y Apellidos (1er Integrante)</label>
+                            <input type="text" class="form-control" name="integrante1" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Nombres y Apellidos (2do Integrante)</label>
+                            <input type="text" class="form-control" name="integrante2">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Nombres y Apellidos (3er Integrante)</label>
+                            <input type="text" class="form-control" name="integrante3">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label required">Correo Electrónico</label>
+                            <input type="email" class="form-control" name="correo" required 
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label required">Programa / Especialidad</label>
+                            <input type="text" class="form-control" name="programa" 
+                                   placeholder="Ejemplo: Master of Science in Healthcare Management" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label required">Tema del Proyecto</label>
+                            <textarea class="form-control" name="tema" rows="3" required
+                                      placeholder="Describa brevemente el tema de su proyecto..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label required">Documento del Proyecto (PDF)</label>
+                            <div class="file-upload">
+                                <input type="file" class="form-control" name="archivo" accept=".pdf" required>
+                                <small class="text-muted d-block mt-2">
+                                    Tamaño máximo: 10MB. Solo se aceptan archivos PDF.
+                                </small>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Enviar Proyecto
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfRhIJfONDTxjkobz2tNYMlnVks2NW5b8vDsn79-jgSD07-O43gi8vfxJ5Rgk4iq4/exec';
+
+        function mostrarLoading(mensaje = 'Procesando su solicitud...') {
+            Swal.fire({
+                title: 'Por favor espere',
+                html: `
+                    <div class="text-center">
+                        <div class="loading-spinner" style="margin: 20px auto;"></div>
+                        <p class="mt-3">${mensaje}</p>
+                        <small class="text-muted">Este proceso puede tomar varios minutos...</small>
+                    </div>
+                `,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                background: 'rgba(255, 255, 255, 0.98)',
+                backdrop: `
+                    rgba(0, 0, 0, 0.85)
+                    url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+                `,
+                customClass: {
+                    popup: 'animate__animated animate__fadeIn',
+                    title: 'text-primary'
+                }
+            });
+        }
+
+        function validarArchivo(file) {
+            if (!file) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Archivo requerido',
+                    text: 'Por favor, seleccione un archivo PDF',
+                    confirmButtonColor: '#FFD700',
+                    background: 'rgba(255, 255, 255, 0.98)',
+                    backdrop: 'rgba(0, 0, 0, 0.85)',
+                    customClass: {
+                        popup: 'animate__animated animate__fadeIn'
+                    }
+                });
+                return false;
+            }
+
+            if (file.type !== 'application/pdf') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Tipo de archivo inválido',
+                    text: 'Solo se permiten archivos PDF',
+                    confirmButtonColor: '#FFD700',
+                    background: 'rgba(255, 255, 255, 0.98)',
+                    backdrop: 'rgba(0, 0, 0, 0.85)',
+                    customClass: {
+                        popup: 'animate__animated animate__fadeIn'
+                    }
+                });
+                return false;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Archivo demasiado grande',
+                    text: 'El archivo no debe superar los 10MB',
+                    confirmButtonColor: '#FFD700',
+                    background: 'rgba(255, 255, 255, 0.98)',
+                    backdrop: 'rgba(0, 0, 0, 0.85)',
+                    customClass: {
+                        popup: 'animate__animated animate__fadeIn'
+                    }
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        document.getElementById('capstoneForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const fileInput = document.querySelector('input[type="file"]');
+            const file = fileInput.files[0];
+
+            if (!validarArchivo(file)) {
+                return;
+            }
+
+            mostrarLoading('Subiendo archivo y generando análisis...');
+
+            try {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                
+                reader.onload = async function() {
+                    const base64Data = reader.result.split(',')[1];
+                    const formData = new FormData(e.target);
+                    const data = new FormData();
+
+                    formData.forEach((value, key) => {
+                        if (key !== 'archivo') {
+                            data.append(key, value);
+                        }
+                    });
+
+                    data.append('archivo', base64Data);
+                    data.append('nombreArchivo', file.name);
+                    data.append('mimeType', file.type);
+
+                    try {
+                        const response = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: data
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Proyecto Enviado!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="success-checkmark">
+                                            <div class="check-icon">
+                                                <span class="icon-line line-tip"></span>
+                                                <span class="icon-line line-long"></span>
+                                            </div>
+                                        </div>
+                                        <p class="mb-3">ID de Registro: <strong>${result.id}</strong></p>
+                                        <p>Se han enviado los correos con el análisis a su dirección de email.</p>
+                                        <small class="text-muted">Por favor, revise su bandeja de entrada y spam.</small>
+                                    </div>
+                                `,
+                                confirmButtonText: 'Entendido',
+                                confirmButtonColor: '#FFD700',
+                                background: 'rgba(255, 255, 255, 0.98)',
+                                backdrop: 'rgba(0, 0, 0, 0.85)',
+                                customClass: {
+                                    popup: 'animate__animated animate__fadeIn',
+                                    title: 'text-success'
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    document.getElementById('capstoneForm').reset();
+                                    document.querySelector('.form-container').classList.add('animate__animated', 'animate__fadeIn');
+                                }
+                            });
+                        } else {
+                            throw new Error(result.message || 'Error en el proceso');
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: error.message || 'Error al procesar la solicitud',
+                            confirmButtonColor: '#FFD700',
+                            background: 'rgba(255, 255, 255, 0.98)',
+                            backdrop: 'rgba(0, 0, 0, 0.85)',
+                            customClass: {
+                                popup: 'animate__animated animate__fadeIn'
+                            }
+                        });
+                    }
+                };
+
+                reader.onerror = function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al procesar el archivo',
+                        confirmButtonColor: '#FFD700',
+                        background: 'rgba(255, 255, 255, 0.98)',
+                        backdrop: 'rgba(0, 0, 0, 0.85)',
+                        customClass: {
+                            popup: 'animate__animated animate__fadeIn'
+                        }
+                    });
+                };
+
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al procesar el formulario',
+                    confirmButtonColor: '#FFD700',
+                    background: 'rgba(255, 255, 255, 0.98)',
+                    backdrop: 'rgba(0, 0, 0, 0.85)',
+                    customClass: {
+                        popup: 'animate__animated animate__fadeIn'
+                    }
+                });
+                console.error('Error:', error);
+            }
+        });
+
+        // Validación en tiempo real del archivo
+        document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                validarArchivo(file);
+            }
+        });
+
+        // Añadir efectos de hover a los campos del formulario
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.mb-4').querySelector('.form-label').style.color = '#FFD700';
+            });
+
+            input.addEventListener('blur', function() {
+                this.closest('.mb-4').querySelector('.form-label').style.color = '';
+            });
+        });
+    </script>
 </body>
 </html>
