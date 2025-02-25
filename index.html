@@ -360,7 +360,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1Fu4b-L3lbsELFQzIMl71qM9RD8yjXHM3LVpQxHPfupurMEFOWaohK-tR3DKbJKE/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFcTGcmVHS_MsdA1AAdTMkBuT6bWmNMGl1AjeCGFGhVbUASBn8pKSQXGOLWwNYBNs/exec';
 
         function mostrarLoading(mensaje = 'Procesando su solicitud...') {
             Swal.fire({
@@ -391,7 +391,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Archivo requerido',
-                    text: 'Por favor, seleccione un archivo PDF',
+                    text: 'Por favor, seleccione un archivo ',
                     confirmButtonColor: '#FFD700',
                     background: 'rgba(255, 255, 255, 0.98)',
                     backdrop: 'rgba(0, 0, 0, 0.85)',
@@ -402,11 +402,11 @@
                 return false;
             }
 
-            if (file.type !== 'application/pdf') {
+            if (file.type !== 'application/') {
                 Swal.fire({
                     icon: 'error',
                     title: 'Tipo de archivo inválido',
-                    text: 'Solo se permiten archivos PDF',
+                    text: 'Solo se permiten archivos ',
                     confirmButtonColor: '#FFD700',
                     background: 'rgba(255, 255, 255, 0.98)',
                     backdrop: 'rgba(0, 0, 0, 0.85)',
